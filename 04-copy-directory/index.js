@@ -1,8 +1,6 @@
-import { readdir, mkdir } from 'node:fs/promises';
+import { readdir, mkdir, unlink } from 'node:fs/promises';
 import { resolve, join } from 'path';
 import { copyFile } from 'node:fs';
-import fs from "node:fs/promises";
-import path from "node:path";
 
 async function copyDir(){
 
@@ -13,8 +11,8 @@ async function copyDir(){
     const projectFolder = new URL('files-copy/', import.meta.url);
     const createDir = await mkdir(projectFolder, { recursive: true });
     console.log("Folder created!")
-    for (const file of await fs.readdir('04-copy-directory/files-copy')) {
-      await fs.unlink(path.join('04-copy-directory/files-copy', file));
+    for (const file of await readdir('04-copy-directory/files-copy')) {
+      await unlink(join('04-copy-directory/files-copy', file));
     }
   }  
   catch (err) {
