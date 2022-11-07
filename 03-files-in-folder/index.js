@@ -15,6 +15,7 @@ try {
       let fileName = file.name.split('.')[0];
       let fileType = extname(file.name);
       stat(path, (err, stats) => {
+        if(err) throw err;
         fileSize = stats.size
         console.log(fileName + " - " + fileType.slice(1) + " - " + fileSize + " bytes")
       });
