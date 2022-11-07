@@ -1,5 +1,4 @@
-import { readdir, mkdir } from 'node:fs/promises';
-import fs from "node:fs/promises";
+import { readdir, mkdir, copyFile } from 'node:fs/promises';
 import { open, readFile, writeFile, appendFile, } from 'fs';
 import path from "node:path";
 
@@ -79,9 +78,6 @@ for (const file of fileCss){
   }
 }
 
-var folderPath = path.resolve('assets'); 
-folderPath = path.join('06-build-page', 'assets')
-
 try {
   let projectFolder1 = new URL('project-dist/assets', import.meta.url);
   let createDir1 = await mkdir(projectFolder1, { recursive: true });
@@ -92,14 +88,14 @@ catch (err) {
 } // очищение и создание папки
 
 async function copyDir(src, dest) {
-  await fs.mkdir(dest, { recursive: true });
-  let entries = await fs.readdir(src, { withFileTypes: true });
+  await mkdir(dest, { recursive: true });
+  let entries = await readdir(src, { withFileTypes: true });
   for (let entry of entries) {
       let srcPath = path.join(src, entry.name);
       let destPath = path.join(dest, entry.name);
       entry.isDirectory() ?
           await copyDir(srcPath, destPath) :
-          await fs.copyFile(srcPath, destPath);
+          await copyFile(srcPath, destPath);
   }
 } // копирование папки assets
 
